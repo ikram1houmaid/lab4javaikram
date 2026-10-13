@@ -1,0 +1,156 @@
+
+package com.example.tp;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+
+class Auteur {
+
+    private static int compteur = 0;
+    private final int id;
+    private String nom;
+    private List<Livre> livres = new ArrayList<>();
+
+    public Auteur(String nom) {
+        this.id = ++compteur;
+        this.nom = nom;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public List<Livre> getLivres() {
+        return livres;
+    }
+
+    public void ajouterLivre(Livre livre) {
+        if (!livres.contains(livre)) {
+            livres.add(livre);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Auteur[id=" + id + ", nom=" + nom
+                + ", nbLivres=" + livres.size() + "]";
+    }
+}
+
+class Livre {
+
+    private static int compteur = 0;
+    private final int id;
+    private String titre;
+    private Auteur auteur;
+
+    public Livre(String titre, Auteur auteur) {
+        this.id = ++compteur;
+        this.titre = titre;
+        this.auteur = auteur;
+        auteur.ajouterLivre(this);
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getTitre() {
+        return titre;
+    }
+
+    public Auteur getAuteur() {
+        return auteur;
+    }
+
+    @Override
+    public String toString() {
+        return "Livre[id=" + id + ", titre=" + titre
+                + ", auteur=" + auteur.getNom() + "]";
+    }
+}
+
+class Bibliotheque {
+
+    private static int compteur = 0;
+    private final int id;
+    private String nom;
+    private Set<Livre> collection = new HashSet<>();
+
+    public Bibliotheque(String nom) {
+        this.id = ++compteur;
+        this.nom = nom;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public Set<Livre> getCollection() {
+        return collection;
+    }
+
+    public void ajouterLivre(Livre livre) {
+        collection.add(livre);
+    }
+
+    @Override
+    public String toString() {
+        return "Bibliotheque[id=" + id + ", nom=" + nom
+                + ", taille=" + collection.size() + "]";
+    }
+}
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        Auteur hugo = new Auteur("Victor Hugo");
+        Auteur orwell = new Auteur("George Orwell");
+
+        Livre m1 = new Livre("Les Misérables", hugo);
+        Livre ndp = new Livre("Notre-Dame de Paris", hugo);
+        Livre l1984 = new Livre("1984", orwell);
+
+        Bibliotheque centrale = new Bibliotheque("Centrale");
+        Bibliotheque quartier = new Bibliotheque("Quartier");
+
+        centrale.ajouterLivre(m1);
+        centrale.ajouterLivre(l1984);
+
+        quartier.ajouterLivre(m1);
+        quartier.ajouterLivre(ndp);
+
+        System.out.println(hugo);
+        for (Livre l : hugo.getLivres()) {
+            System.out.println("  • " + l);
+        }
+
+        System.out.println(orwell);
+        for (Livre l : orwell.getLivres()) {
+            System.out.println("  • " + l);
+        }
+
+        System.out.println(centrale);
+        for (Livre l : centrale.getCollection()) {
+            System.out.println("  – " + l.getTitre()
+                    + " (id=" + l.getId() + ")");
+        }
+
+        System.out.println(quartier);
+        for (Livre l : quartier.getCollection()) {
+            System.out.println("  – " + l.getTitre()
+                    + " (id=" + l.getId() + ")");
+        }
+    }
+}

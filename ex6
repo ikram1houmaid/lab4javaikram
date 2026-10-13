@@ -1,0 +1,45 @@
+
+class Point {
+
+    private double x;
+    private double y;
+
+    public Point(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public Point translation(double a, double b) {
+        return new Point(x + a, y + b);
+    }
+
+    public static double distance(Point p1, Point p2) {
+        double dx = p2.x - p1.x;
+        double dy = p2.y - p1.y;
+
+        return Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+    }
+
+    @Override
+    public String toString() {
+        return "( " + x + " , " + y + " )";
+    }
+}
+
+public class TestPoint {
+
+    public static void main(String[] argv) {
+
+        Point p1 = new Point(1.0, 3.0);
+        Point p2 = new Point(5.0, 6.0);
+
+        Point p3 = p1.translation(2.0, 1.5);
+
+        double d = Point.distance(p1, p2);
+
+        System.out.println("p1 = " + p1);
+        System.out.println("p2 = " + p2);
+        System.out.println("p3 = " + p3);
+        System.out.println("Distance = " + d);
+    }
+}
